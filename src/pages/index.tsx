@@ -1,6 +1,5 @@
 import { Inter } from 'next/font/google'
 import Head from 'next/head'
-import styles from "@/styles/Home.module.css"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -9,6 +8,7 @@ export default function Component() {
     <div className={`${inter.className}`}>
       <Head>
         <title>nebula protocol</title>
+        <script async defer data-website-id="e9daa61b-40bb-416b-a6d6-a28ec06ee6b7" src="https://analytics.dakshk.xyz/umami.js"></script>
       </Head>
       <section className="w-full h-screen py-12 md:py-24 lg:py-32 xl:py-48 bg-black">
         <div className="container px-4 mx-auto md:px-6">
