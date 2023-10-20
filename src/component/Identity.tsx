@@ -303,7 +303,7 @@ function Identity({ atom, identity }: { atom: `0x${string}`, identity: `0x${stri
         console.log(error)
     }
 
-    const { write, data, isSuccess } = useContractWrite(config);
+    const { write, data, isLoading } = useContractWrite(config);
 
     const bridgeAtom = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
@@ -328,7 +328,7 @@ function Identity({ atom, identity }: { atom: `0x${string}`, identity: `0x${stri
                             <option value="2">Avalanche</option>
                         </select>
                     </div>
-                    <button className='bg-blue-500 px-4 py-1.5 rounded-md' onClick={bridgeAtom}>Bridge</button>
+                    <button disabled={isLoading} className='px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600 duration-200 text-white' onClick={bridgeAtom}>{isLoading ? "..." : "Bridge"}</button>
                 </div>
             </div>
         </div>

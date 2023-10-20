@@ -306,7 +306,7 @@ export default function Component() {
         args: ["0xba76c56bd48625f65dfd5e1c6550fe99e858bc95cf68b976362f304f52746dba", namehash(ensName)]
     });
 
-    const { write } = useContractWrite(config);
+    const { write, isLoading } = useContractWrite(config);
 
     const getCredential = async (e: any) => {
         e.preventDefault();
@@ -337,7 +337,7 @@ export default function Component() {
                         <form >
                             <input type="text" placeholder='enter your ens name' className='px-4 py-2 mt-8 mb-4 rounded-md text-black' onChange={(e) => setEnsName(e.target.value)} />
                             <br />
-                            <button type="submit" className='px-4 py-2 rounded-md bg-blue-500 text-white' onClick={getCredential}>Submit</button>
+                            <button type="submit" disabled={isLoading} className='px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600 duration-200 text-white' onClick={getCredential}>{isLoading ? "..." : "Submit"}</button>
                         </form>
                     </div>
                 </div>
