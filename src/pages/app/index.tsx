@@ -25,7 +25,7 @@ export default function Component() {
 
     useEffect(() => {
         fetchBonds()
-    }, [isConnected])
+    }, [isConnected, address])
 
     const contract = getContract({
         address: "0x5c3EBd455a7844b9A701A0E4685F0C02a522E421",
@@ -360,11 +360,12 @@ export default function Component() {
                         Your identities
                     </h3>
                     {
-                        bonds ? (bonds.map((el, idx) => {
+                        (bonds && bonds.length > 0) ? (bonds.map((el, idx) => {
                             return (<div key={idx}>
                                 <Identity atom={el.atom} identity={el.atomUid} />
                             </div>)
-                        })) : "No Bonds Found!"
+                            // @ts-ignore
+                        })) : (<marquee>No Bonds Found! Get yours now!</marquee>)
                     }
                 </div>
             </section>
