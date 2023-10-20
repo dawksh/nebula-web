@@ -1,7 +1,7 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import { WagmiConfig, createConfig } from "wagmi";
-import { ConnectKitProvider, ConnectKitButton, getDefaultConfig } from "connectkit";
+import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 import { goerli, polygonMumbai, avalancheFuji } from 'wagmi/chains'
 
 const config = createConfig(
@@ -24,7 +24,6 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={config}>
       <ConnectKitProvider>
-        <ConnectKitButton />
         <Component {...pageProps} />
       </ConnectKitProvider>
     </WagmiConfig>
