@@ -312,7 +312,7 @@ function Identity({ atom, identity }: { atom: `0x${string}`, identity: `0x${stri
 
     return (
         <div>
-            <div className='flex flex-row w-4/5 mx-16 my-4 border-white border-2 p-8 rounded-md justify-between'>
+            <div className='flex flex-row w-4/5  p-8 rounded-md justify-between' style={{ border: "2px solid white", padding: "2rem", margin: "2rem 4rem" }}>
                 <div className='flex flex-col'>
                     <span>
                         UID: {atom}
@@ -321,9 +321,9 @@ function Identity({ atom, identity }: { atom: `0x${string}`, identity: `0x${stri
                         Atom: {identity}
                     </span>
                 </div>
-                <div className='flex flex-row'>
-                    <div className="relative w-full mr-8 lg:max-w-sm mx-2">
-                        <select className="w-full p-2.5 text-gray-700 bg-white border rounded-md shadow-sm outline-none focus:border-indigo-600">
+                <div className='flex flex-row justify-between'>
+                    <div className="w-full mr-8 lg:max-w-sm mx-2">
+                        <select className="p-2.5 text-gray-700 bg-white border rounded-md shadow-sm outline-none focus:border-indigo-600" style={{ color: 'gray', backgroundColor: 'white', borderRadius: "0.375rem", padding: "0.625rem", margin: "0rem 2rem" }}>
                             <option value="1">Mumbai</option>
                             <option value="2">Avalanche</option>
                         </select>

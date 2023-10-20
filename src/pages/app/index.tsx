@@ -1,17 +1,31 @@
 import { Inter } from 'next/font/google'
 import Head from 'next/head'
 import Navbar from '@/component/Navbar'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { getContract, namehash } from 'viem'
-import { useContractWrite, usePrepareContractWrite } from 'wagmi'
+import { useContractWrite, usePrepareContractWrite, useAccount } from 'wagmi'
 import Identity from '@/component/Identity'
+import { getAllBonds } from '@/utils/query'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Component() {
 
     const [ensName, setEnsName] = useState<string>('');
-    const [loading, setLoading] = useState<Boolean>(false);
+    const [bonds, setBonds] = useState<Array<any> | null>();
+
+    const { isConnected, address } = useAccount()
+
+    const fetchBonds = async () => {
+        if (isConnected) {
+            const bonds = await getAllBonds(address as string)
+            setBonds(bonds)
+        }
+    }
+
+    useEffect(() => {
+        fetchBonds()
+    }, [isConnected])
 
     const contract = getContract({
         address: "0x5c3EBd455a7844b9A701A0E4685F0C02a522E421",
@@ -345,9 +359,11 @@ export default function Component() {
                     <h3 className="text-xl font-bold sm:text-2xl xl:text-3xl/none my-8 mx-16 text-gradient">
                         Your identities
                     </h3>
-                    <div>
-                        <Identity atom='0xba76c56bd48625f65dfd5e1c6550fe99e858bc95cf68b976362f304f52746dba' identity='0x72786623ce2fe20d1e82edf087f57c609e69a861a27defb5926aa5d6b1834fd3' />
-                    </div>
+                    {
+                        bonds ? (bonds.map(el => {
+                            return <Identity atom={el.atom} identity={el.atomUid} />
+                        })) : "No Bonds Found!"
+                    }
                 </div>
             </section>
         </div>
