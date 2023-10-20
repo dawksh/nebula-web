@@ -360,8 +360,10 @@ export default function Component() {
                         Your identities
                     </h3>
                     {
-                        bonds ? (bonds.map(el => {
-                            return <Identity atom={el.atom} identity={el.atomUid} />
+                        bonds ? (bonds.map((el, idx) => {
+                            return (<div key={idx}>
+                                <Identity atom={el.atom} identity={el.atomUid} />
+                            </div>)
                         })) : "No Bonds Found!"
                     }
                 </div>
