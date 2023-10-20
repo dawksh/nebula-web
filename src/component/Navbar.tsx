@@ -4,7 +4,7 @@ import { ConnectKitButton } from 'connectkit';
 
 const Navbar = () => {
     return (
-        <nav className="bg-black w-screen p-16 flex justify-between ">
+        <nav className="bg-black w-screen px-16 flex justify-between ">
             <div className='mr-4'>
                 <Image src={"/assets/logo.png"} alt='Logo' height={100} width={100}></Image>
             </div>

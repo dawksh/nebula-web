@@ -1,18 +1,8 @@
-import { Inter } from 'next/font/google'
-import Head from 'next/head'
-import Navbar from '@/component/Navbar'
-import { useState } from 'react'
-import { getContract, namehash } from 'viem'
+import React from 'react'
+import { getContract, parseEther } from 'viem'
 import { useContractWrite, usePrepareContractWrite } from 'wagmi'
-import Identity from '@/component/Identity'
 
-const inter = Inter({ subsets: ['latin'] })
-
-export default function Component() {
-
-    const [ensName, setEnsName] = useState<string>('');
-    const [loading, setLoading] = useState<Boolean>(false);
-
+function Identity({ atom, identity }: { atom: `0x${string}`, identity: `0x${string}` }) {
     const contract = getContract({
         address: "0x5c3EBd455a7844b9A701A0E4685F0C02a522E421",
         abi: [
@@ -299,57 +289,50 @@ export default function Component() {
         ]
     });
 
+    const [chain, setChain] = React.useState(5);
+
     const { config, error } = usePrepareContractWrite({
         address: contract.address,
         abi: contract.abi,
-        functionName: "createBond",
-        args: ["0xba76c56bd48625f65dfd5e1c6550fe99e858bc95cf68b976362f304f52746dba", namehash(ensName)]
-    });
+        functionName: "sendCrossChain",
+        args: [chain, contract.address, atom, identity],
+        value: parseEther("0.00164745")
+    })
 
-    const { write } = useContractWrite(config);
+    if (error) {
+        console.log(error)
+    }
 
-    const getCredential = async (e: any) => {
+    const { write, data, isSuccess } = useContractWrite(config);
+
+    const bridgeAtom = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-        if (!error && write) {
-            const txn = write();
-            console.log(txn)
-        } else {
-            console.log(error)
-        }
-    };
+        write?.();
+    }
 
     return (
-        <div className={`${inter.className}`}>
-            <Head>
-                <title>ens identity | nebula protocol</title>
-                <script async defer data-website-id="e9daa61b-40bb-416b-a6d6-a28ec06ee6b7" src="https://analytics.dakshk.xyz/umami.js"></script>
-            </Head>
-            <section className="w-full h-screen px-8 py-8 md:py-4 lg:py-8 xl:py-16 bg-black">
-                <Navbar />
-                <div className="flex justify-center flex-col align-middle">
-                    <h1 className="text-3xl font-bold sm:text-5xl xl:text-6xl/none text-center my-4 text-gradient">
-                        ENS Identity
-                    </h1>
-                    <p className={`max-w-[600px]  text-lg md:text-md flex text-zinc-100 mx-auto ${inter.className}`}>
-                        get your ENS atom identity issued using your ENS name.
-                    </p>
-                    <div className='text-center flex flex-col'>
-                        <form >
-                            <input type="text" placeholder='enter your ens name' className='px-4 py-2 mt-8 mb-4 rounded-md text-black' onChange={(e) => setEnsName(e.target.value)} />
-                            <br />
-                            <button type="submit" className='px-4 py-2 rounded-md bg-blue-500 text-white' onClick={getCredential}>Submit</button>
-                        </form>
-                    </div>
+        <div>
+            <div className='flex flex-row w-4/5 mx-16 my-4 border-white border-2 p-8 rounded-md justify-between'>
+                <div className='flex flex-col'>
+                    <span>
+                        UID: {atom}
+                    </span>
+                    <span>
+                        Atom: {identity}
+                    </span>
                 </div>
-                <div>
-                    <h3 className="text-xl font-bold sm:text-2xl xl:text-3xl/none my-8 mx-16 text-gradient">
-                        Your identities
-                    </h3>
-                    <div>
-                        <Identity atom='0xba76c56bd48625f65dfd5e1c6550fe99e858bc95cf68b976362f304f52746dba' identity='0x72786623ce2fe20d1e82edf087f57c609e69a861a27defb5926aa5d6b1834fd3' />
+                <div className='flex flex-row'>
+                    <div className="relative w-full mr-8 lg:max-w-sm mx-2">
+                        <select className="w-full p-2.5 text-gray-700 bg-white border rounded-md shadow-sm outline-none focus:border-indigo-600">
+                            <option value="1">Mumbai</option>
+                            <option value="2">Avalanche</option>
+                        </select>
                     </div>
+                    <button className='bg-blue-500 px-4 py-1.5 rounded-md' onClick={bridgeAtom}>Bridge</button>
                 </div>
-            </section>
+            </div>
         </div>
     )
 }
+
+export default Identity
